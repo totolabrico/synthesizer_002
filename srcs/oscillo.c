@@ -1,17 +1,30 @@
 #include "main.h"
 
-void* oscillo_new(double freq, double amp, double pan, double gain)
+void* oscillo_new(char *cmd)
 {
     oscillo *osc;
+    char **splited;
+    int len;
 
     osc = malloc(sizeof(oscillo));
-    oscillo_setfreq(osc, freq);
-    osc->amp =amp;
-    osc->gain = gain;
+    splited = ft_split(cmd, ' ');
+    oscillo_setfreq(osc, 0);
+    osc->amp = 0;
+    osc->gain = 0;
+    osc->pan = 0;
     osc->phase = 0;
-    osc->pan = pan;
+    len = strtabsize(splited);
+    if (len > 0)
+        oscillo_setfreq(osc, atof(splited[0]));
+    if (len > 1)
+       osc->amp = atof(splited[1]);
+    if (len > 2)
+       osc->pan = atof(splited[2]);
+    if (len > 3)
+       osc->gain = atof(splited[3]);
     osc->pluglst[0] = NULL;
     osc->pluglst[1] = NULL;
+    strtabfree(splited);
     return (void *)osc;
 }
 

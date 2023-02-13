@@ -21,6 +21,54 @@ void synth_clear(void *addr)
     free(s);
 }
 
+t_list **synth_getplugsrc(synth *s, char *name, int id, int chn)
+{
+    t_list **lst;
+    oscillo *osc;
+    lines *l;
+    
+    if(strcmp(name, "osc") == 0)
+    {
+        osc = (oscillo*)lstget_byid(s->osclst, id)->content; 
+        lst = (t_list **)&osc->pluglst[chn];
+    }
+    else if (strcmp(name, "lines"))
+    {
+        l = (lines*)lstget_byid(s->lineslst, id)->content;
+        lst = (t_list **)l->pluglst;
+    }
+    return lst;
+}
+
+void *synth_getplugdest(synth *s, char *dest, int id)
+{
+    if (strcmp(dest, "master") == 0)
+        return &s->out[id];
+    else if (strcmp(dest, "osc") == 0)
+        return lstget_byid(s->osclst, id)->content;
+    else if (strcmp(dest, "lines") == 0)
+        return lstget_byid(s->lineslst, id)->content;
+    return NULL;
+}
+
+void synth_addplug(synth *s, char *cmd)
+{
+    char **splited;
+    void *src;
+    void *dest;
+    char *meth;
+
+    splited = ft_split(cmd, ' ');
+    if(strtabsize(splited) != 6)
+        return;
+    meth = splited[5];
+    if(!method_getaddr(meth))
+        return;
+    src = synth_getplugsrc(s, splited[0], atoi(splited[1]), atoi(splited[2]));
+    dest = synth_getplugdest(s, splited[3], atoi(splited[4]));
+    lstadd_back(src, lstnew(plug_new(dest, meth)));
+}
+
 void synth_run(void *addr)
 {
     synth *s;
@@ -30,6 +78,7 @@ void synth_run(void *addr)
     s->out[1] = 0;
     lstiter(s->osclst, &oscillo_write);
     lstiter(s->lineslst, &lines_write);
+    lstpurgenull(&s->lineslst, &lines_clear);
 }
 
 double synth_getchannel(void *addr, int chn)

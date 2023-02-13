@@ -13,19 +13,18 @@ void prompt_analyse(synth *s, char *cmd)
     cmdsize = strtabsize(args);
     printf("%s %d \n", args[3], cmdsize);
 
-    if(strcmp(args[0], "osc") == 0 && cmdsize == 5)
-        osclst_add(s, atof(args[1]), atof(args[2]), atof(args[3]), atof(args[4]));
+    if(strcmp(args[0], "osc") == 0)
+        lstadd_back(&s->osclst, lstnew(oscillo_new(&cmd[4])));
+    else if(strcmp(args[0], "lines") == 0)
+        lstadd_back(&s->lineslst, lstnew(lines_new(&cmd[6])));
+    else if(strcmp(args[0], "plug") == 0)
+        synth_addplug(s, &cmd[5]);
+    /*
     else if(strcmp(args[0], "unplug") == 0 && cmdsize == 4)
         osclst_unplug(s, atoi(args[1]), atoi(args[2]), atoi(args[3]));
-    else if(strcmp(args[0], "plug") == 0 && cmdsize == 5)
-    { 
-        if(strcmp(args[3], "master")== 0)
-            osclst_addplug(s, atoi(args[1]), atoi(args[2]), 1000+atoi(args[4]), "add");
-        else
-            osclst_addplug(s, atoi(args[1]), atoi(args[2]), atoi(args[3]), args[4]);
-    }
     else if(cmdsize == 3)
         osclst_set(s, atoi(args[0]), args[1], atof(args[2]));
+    */
     strtabfree(args);
 }
 

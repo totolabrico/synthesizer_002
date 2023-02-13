@@ -29,6 +29,7 @@ void synth_clear(void *addr);
 void synth_run(void *synth);
 double synth_getchannel(void *addr, int chn);
 void synth_generate(const snd_pcm_channel_area_t *areas, void* synth);
+void synth_addplug(synth *s, char *cmd);
 void synth_print(void *addr);
 
 synth *loadsynth(char *src);
@@ -41,7 +42,7 @@ const char *method_getname(void *addr);
 void addvalue(void *dest, double value);
 void copyvalue(void *addr, double value);
 
-void *oscillo_new(double freq, double amp, double pan, double gain);
+void* oscillo_new(char *cmd);
 void oscillo_setfreq(void* addr, double value);
 void oscillo_setamp(void *addr, double value);
 void oscillo_setpan(void *addr, double value);
@@ -64,7 +65,8 @@ void vector_clear(void *addr);
 float vector_getbetweenvalue(int i, int len, vector a, vector b);
 void vector_setscalar(vector *vect, char axe, float value);
 
-void lines_new(lines *l, char *cmd);
+lines *lines_new(char *cmd);
+void lines_clear(void *addr);
 void lines_addvectors(lines *l, char *cmd);
 void lines_setlen(lines *l);
 void lines_setpos(lines *l, int id, char axe, float value);
@@ -74,9 +76,7 @@ float lines_getvalue(lines *l);
 void lines_write(void *addr);
 void lines_plugpurge(void *addr);
 
-void osclst_add(void *addr, double freq, double amp, double pan, double gain);
 void osclst_set(void *addr, int id, char *meth, double value);
-void osclst_addplug(void *addr, int srcid, int srcchn, int destid, char *method);
 void osclst_unplug(void *addr, int srcid, int srcchn, int plugid);
 
 void pluglst_write(t_list *lst, double value);

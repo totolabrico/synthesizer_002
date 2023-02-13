@@ -1,11 +1,26 @@
 #include "main.h"
 
-void lines_new(lines *l, char *cmd)
+lines *lines_new(char *cmd)
 {
+    lines *l;
+    l = malloc(sizeof(lines));
+    if(!l)
+        return NULL;
     l->vectorlst = NULL;
     l->pluglst = NULL;
     lines_addvectors(l, cmd);
     lines_setlen(l);
+    return l;
+}
+
+void lines_clear(void *addr)
+{
+    lines *l;
+
+    l = (lines*)addr;
+    lstclear((t_list **)l->vectorlst, &vector_clear);
+    lstclear((t_list**)l->pluglst, &plug_clear);
+    free(l);
 }
 
 void lines_addvectors(lines *l, char *cmd)
@@ -25,23 +40,18 @@ void lines_addvectors(lines *l, char *cmd)
         lstadd_back(&lst, lstnew(vector_new(atof(splited[i]), atof(splited[i + 1]))));
         i += 2;
     }
-}
-
-void lines_clear(void *addr)
-{
-    lines *l;
-
-    l = (lines*)addr;
-    lstclear((t_list **)l->vectorlst, &vector_clear);
-    lstclear((t_list**)l->pluglst, &plug_clear);
-    free(l);
+    strtabfree(splited);
 }
 
 void lines_setlen(lines *l)
 {
+    t_list *last;
     vector *v;
 
-    v  = (vector *)lstlast(l->vectorlst)->content;
+    last = lstlast(l->vectorlst)->content;
+    if(!last)
+        return;
+    v  = (vector *)last;
     l->len = v->x * rate;
 }
 

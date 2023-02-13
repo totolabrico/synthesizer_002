@@ -195,3 +195,25 @@ t_list *lstpop(t_list *list, void (*del)(void*), int id)
 	lstdelone(l, del);
 	return first;
 }
+
+void lstpurgenull(t_list **lst, void (*del)(void*))
+{
+	t_list *l;
+	int i;
+
+	i = 0;
+	l = *lst;
+	while (l)
+	{
+		if (!l->content)
+		{
+			lstpop(*lst, del, i);
+			l = lstget_byid(*lst, i);
+		}
+		else
+		{
+			l = l->next;
+			i++;
+		}
+	}
+}

@@ -20,5 +20,6 @@ t_list				*lstget_byid(t_list *list, int id);
 t_list				*lstget_byaddr(t_list *list, void *addr);
 int					lstgetid_byaddr(t_list *lst, void *addr);
 t_list				 *lstpop(t_list *list, void (*del)(void*), int id);
+void				lstpurgenull(t_list **list,  void (*del)(void*));
 
 #endif
