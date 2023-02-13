@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../synth_001"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"main.h": "c",
+			"pcm_utils.h": "c",
+			"asoundlib.h": "c"
+		}
+	}
+}

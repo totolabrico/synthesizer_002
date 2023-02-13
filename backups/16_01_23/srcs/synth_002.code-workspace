@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../synth_001"
+		},
+		{
+			"path": "../../rosetastone"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"main.h": "c",
+			"pcm_utils.h": "c",
+			"asoundlib.h": "c"
+		}
+	}
+}

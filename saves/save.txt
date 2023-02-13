@@ -1,0 +1,6 @@
+osc 60 1 0 0
+plug 0 0 master 0
+plug 0 1 master 1
+osc 440 1 0 0
+plug 1 0 master 0
+plug 1 1 master 1
